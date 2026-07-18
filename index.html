@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app="expenseApp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker</title>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body ng-controller="MainController" ng-class="isDarkMode ? 'dark-theme' : 'light-theme'">
+
+  <header ng-if="isAuthenticated">
+    <div class="header-left">
+      <button class="menu-btn" ng-click="toggleSidebar()">☰ Menu</button>
+    </div>
+    <div class="header-right">
+            
+      <button class="theme-toggle-btn" ng-click="toggleTheme()">
+        {{ isDarkMode ? '⚡ LIGHT MODE' : '🌙 DARK MODE' }}
+      </button>
+
+      <button class="logout-btn" ng-click="logout()">Logout</button>
+      <select ng-model="selectedCurrency" class="currency-select">
+        <option value="₹">INR (₹)</option>
+        <option value="$">USD ($)</option>
+        <option value="€">EUR (€)</option>
+        <option value="£">GBP (£)</option>
+      </select>
+    </div>
+  </header>
+
+  <div class="sidebar" ng-class="{'open': isSidebarOpen}" ng-if="isAuthenticated">
+    <ul>
+      <li ng-click="navigateTo('/profile')">👤 PROFILE</li>
+      <li ng-click="navigateTo('/dashboard')">📊 DASHBOARD</li>
+      <li ng-click="logout()">🚪 TERMINATE SESSION</li>
+    </ul>
+  </div>
+
+  <div ng-view></div>
+
+</body>
+</html>

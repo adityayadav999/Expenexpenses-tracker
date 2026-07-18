@@ -1,0 +1,99 @@
+<div class="container view-spacing">
+  <div class="cards">
+    <div class="card card-income">
+      <h4>TOTAL INFLOW </h4>
+      <p class="income-text">{{ selectedCurrency }}{{ getTotalIncome() | number:2 }}</p>
+    </div>
+    <div class="card card-expense">
+      <h4>TOTAL OUTFLOW </h4>
+      <p class="expense-text">{{ selectedCurrency }}{{ getTotalExpenses() | number:2 }}</p>
+    </div>
+    <div class="card card-net">
+      <h4>NET MARGIN </h4>
+      <p class="profit-text" ng-class="getProfit() >= 0 ? 'income-text' : 'expense-text'">
+        {{ getProfit() >= 0 ? '' : '-' }}{{ selectedCurrency }}{{ Math.abs(getProfit()) | number:2 }}
+      </p>
+    </div>
+  </div>
+
+  <div class="chart-section">
+    <h3 style="text-align: center; margin-bottom: 5px;">EXPENSES BY CATEGORY </h3>
+    <p style="text-align: center; font-size: 11px; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 15px;">
+      SELECT MATRIX SEGMENT TO FILTER DATA
+    </p>
+    <div class="chart-container">
+      <canvas id="expenseChart"></canvas>
+    </div>
+  </div>
+
+  <h3>
+    TRANSACTION LOG  
+    <span ng-if="selectedCategory" style="font-size: 13px; font-weight: normal; letter-spacing: 0;">
+      (FILTER: <strong>{{ selectedCategory }}</strong> <a href="#" ng-click="clearFilter()" class="clear-link">[CLEAR]</a>)
+    </span>
+  </h3>
+  <table class="summary-table" style="margin-top: 10px;">
+    <thead>
+      <tr>
+        <th>DATE</th>
+        <th>NAME</th>
+        <th>CATEGORY</th>
+        <th>TYPE</th>
+        <th>PAYMENT</th>
+        <th>AMOUNT</th>
+        <th>ACTION</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="item in transactions | filter: categoryFilter">
+        <td>{{ item.date }}</td>
+        <td>{{ item.name }}</td>
+        <td><span class="badge">{{ item.category | uppercase }}</span></td>
+        <td>{{ item.type | uppercase }}</td>
+        <td>{{ item.paymentType | uppercase }}</td>
+        <td ng-class="item.type === 'income' ? 'income-text' : 'expense-text'">
+          {{ item.type === 'income' ? '+' : '-' }}{{ selectedCurrency }}{{ item.amount | number:2 }}
+        </td>
+        <td>
+          <button class="delete-btn" ng-click="deleteTransaction(item)">[X]</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<button class="fab" ng-click="openAddModal()">+</button>
+
+<div class="modal-overlay" ng-if="isModalOpen">
+  <!-- (Keep original modal structural markup exactly as it was) -->
+  <div class="modal">
+    <h3>ADD TRANSACTION //</h3>
+    <form ng-submit="addTransaction()">
+      <select ng-model="newItem.type" required>
+        <option value="expense">EXPENSE</option>
+        <option value="income">INCOME</option>
+      </select>
+      <input type="text" ng-model="newItem.name" placeholder="NAME / TITLE" required>
+      <input type="number" step="0.01" ng-model="newItem.amount" placeholder="AMOUNT" required>
+      <select ng-model="newItem.category" required>
+        <option value="Food">FOOD</option>
+        <option value="Bills">BILLS</option>
+        <option value="Shopping">SHOPPING</option>
+        <option value="Salary">SALARY</option>
+        <option value="Other">OTHER</option>
+      </select>
+      <input type="date" ng-model="newItem.date" required>
+      <select ng-model="newItem.paymentType" required>
+        <option value="Cash">CASH</option>
+        <option value="Credit Card">CREDIT CARD</option>
+        <option value="Debit Card">DEBIT CARD</option>
+        <option value="Bank Transfer">BANK TRANSFER</option>
+      </select>
+      <textarea ng-model="newItem.comment" placeholder="COMMENT (OPTIONAL)"></textarea>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" ng-click="closeAddModal()">CANCEL</button>
+        <button type="submit" class="btn btn-primary">EXECUTE</button>
+      </div>
+    </form>
+  </div>
+</div>

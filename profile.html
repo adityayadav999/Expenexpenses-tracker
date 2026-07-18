@@ -1,0 +1,17 @@
+<div class="container view-spacing">
+  <div class="chart-section profile-card animate-fade">
+    <div class="profile-header">
+      <div class="avatar">👤</div>
+      <div>
+        <h2>{{ user.name }}</h2>
+        <span class="badge active-badge">{{ user.tier }}</span>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="profile-details">
+      <p><strong>Registered Email:</strong> {{ user.email }}</p>
+      <p><strong>Session Initialization Date:</strong> {{ user.joined }}</p>
+    </div>
+    <button class="btn btn-secondary mt-20" ng-click="navigateTo('/dashboard')">← Return Dashboard</button>
+  </div>
+</div>

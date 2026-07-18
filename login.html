@@ -1,0 +1,12 @@
+<div class="auth-wrapper">
+  <div class="card login-card animate-scale">
+    <h2>EXPENSE APP // SECURE ACCESS</h2>
+    <p class="subtitle">Enter your active operator credentials</p>
+    <form ng-submit="handleLogin()">
+      <input type="text" ng-model="loginData.username" placeholder="USERNAME" required>
+      <input type="password" ng-model="loginData.password" placeholder="PASSWORD" required>
+      <button type="submit" class="btn btn-primary btn-block">AUTHORIZE ACCOUNT</button>
+      <p class="error-text" ng-if="errorMessage">{{ errorMessage }}</p>
+    </form>
+  </div>
+</div>
